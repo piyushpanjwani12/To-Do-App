@@ -1,6 +1,12 @@
-# Faqapp
+# To-do-App
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.1.
+
+# Install
+ Write command "npm install -g @angular/cli"
+ 
+ Open gitbash. Navigate to the folder where this project is cloned.
+ 
 
 ## Development server
 
