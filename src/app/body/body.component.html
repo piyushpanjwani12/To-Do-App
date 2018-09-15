@@ -1,73 +1,123 @@
-<h1>Welcome to faqapp!</h1>
-<nav class="navbar navbar-expand-sm bg-light justify-content-center">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="#" (click)="showAdd()">Add User</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" (click)="showEdit()">Edit user</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" (click)="showList()">List Users</a>
-      </li>
-      <li class="nav-item" >
-        <a href="#" class="nav-link" (click)="showView()">View User</a>
-      </li>
-    </ul>
-  </nav>
-<div class="container">
-  <div class="add" [hidden]="addHidden">
-    <div class="card">
-      <div class="card-header">Add User</div>
-      <div class="card-body">
-        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-          <div class="form-group">
-            <label >Username </label><span *ngIf="nameIt.errors?.required && nameIt.touched" style="color:red;">Name is required</span>
-            <span *ngIf="nameIt.errors?.minlength && nameIt.touched" style="color:red;">Minimum length should be 3</span>
-            <input type="text" class="form-control" [(ngModel)]="name" name="name" #nameIt="ngModel" minlength="3" required>
-          </div>
-          <div class="form-group">
-            <label >UserType </label><span *ngIf="typeIt.errors?.required && typeIt.touched" style="color:red;">Type is required</span>
-            <span *ngIf="typeIt.errors?.minlength && typeIt.touched" style="color:red;">Minimum length should be 3</span>
-            <input type="text" class="form-control" [(ngModel)]="type" name="type" #typeIt="ngModel" minlength="3" required>
-          </div>
-          <input type="submit" value="Submit" class="btn btn-success">
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="edit" [hidden]="editHidden">
-    <div class="card">
-      <div class="card-header">Edit User</div>
-      <div class="card-body">All form details here</div>
-    </div>
-  </div>
-  <div class="list" [hidden]="listHidden">
-    <div class="card">
-      <div class="card-header">List Users</div>
-      <div class="card-body">
-          <table class="table table-striped">
+
+
+<div class="container" >
+    <div class="container">
+      <!-- All Lists Card -->
+      <div class="card" id="listCard">
+        <div class="card-header">List Names</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <!-- <li class="list-group-items" *ngFor="let name of nameLists">{{name}}</li> -->
+            <select id="myId" [(ngModel)]="selectedOption" name="selectedOption" class="form-control">
+              <option *ngFor="let name of nameLists">{{name}}</option>
               
-              <tbody>
-                <tr>
-                  <td>Username</td>
-                  <td *ngFor="let users of usernames">{{users}}</td>
-                </tr>
-                <tr>
-                  <td>UserType</td>
-                  <td *ngFor="let types of usertypes">{{types}}</td>
-                </tr>
-                
-              </tbody>
-            </table>
+            </select>
+          </ul>
+          <br/>
+          <form #f="ngForm" (ngSubmit)="onAdd(f)">
+            <div class="form-group">
+              <input type="text" placeholder="Add a new List" class="form-control" [(ngModel)]="addToList" name="addToList" #addList="ngModel" minlength="2" required>
+              <div *ngIf="addList.errors?.required && addList.touched" style="color:red;">Enter a List Name</div>
+              <div *ngIf="addList.errors?.minlength && addList.touched" style="color:red;">Minimum length should be 2</div>
+            </div>
+            <!-- <p style="color:red">{{submissionError}}</p> -->
+            <button type="submit" id="btn-submit" data-toggle="modal" data-target="#myModal" style="background-color:transparent; border:none;cursor:pointer;"><img src="assets/plus.png" alt=""></button>
+          </form>
+
+          <!-- <h3>{{selectedOption}}</h3> -->
+        </div>
       </div>
+      <br/><br/>
+
+
+      <!-- All todos Card -->
+      <div class="card" id=todoCard>
+        <div class="card-header">
+          {{selectedOption}}
+        </div>
+        <div class="card-body">
+          <ul>
+            <!-- for unchecked -->
+            <span *ngFor="let todos of list">
+              <div *ngIf="selectedOption===todos.listName" class="todo-items">
+                <span *ngIf="!todos.itemStatus">
+                  <input type="checkbox" [(ngModel)]="todos.itemStatus" (check)="!todos.itemStatus">{{todos.itemName}}</span>
+              </div>
+            </span>
+            <!-- for checked -->
+            <span *ngFor="let todos of list">
+              <div *ngIf="selectedOption===todos.listName"  class="todo-checked-items" (dblclick)="deleteTodo(todos)">
+                <span *ngIf="todos.itemStatus">
+                  <hr>
+                  <input type="checkbox" [(ngModel)]="todos.itemStatus" (check)="!todos.itemStatus"  >{{todos.itemName}}</span>
+                  
+              </div>
+            </span>
+          </ul>
+          <form #g="ngForm" (ngSubmit)="onItemAdd(g)">
+            <div class="form-group">
+              <input type="text" placeholder="Add a new Todo" class="form-control" [(ngModel)]="addTodo" name="addTodo" #addItem="ngModel" minlength="2" required>
+              <div *ngIf="addItem.errors?.required && addItem.touched" style="color:red;">Enter a Todo Name</div>
+              <div *ngIf="addItem.errors?.minlength && addItem.touched" style="color:red;">Minimum length should be 2</div>
+            </div>
+            <!-- <p style="color:red">{{additionError}}</p> -->
+            <button type="submit" id="btn-submit" data-toggle="modal" data-target="#myModal1" style="background-color:transparent; border:none;cursor:pointer;"><img src="assets/plus.png" alt=""></button>
+          </form>
+        </div>
+      </div>
+
     </div>
-  </div>
-  <div class="view" [hidden]="viewHidden">
-    <div class="card">
-      <div class="card-header">View User</div>
-      <div class="card-body">All form details here</div>
+
+</div>
+
+
+<!-- The Modal for new list -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Information</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            {{submissionError}}
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
     </div>
   </div>
 
-</div>
+
+<!-- The Modal for new Todo -->
+<div class="modal" id="myModal1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Information</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            {{additionError}}
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>

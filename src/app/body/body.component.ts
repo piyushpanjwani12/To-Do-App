@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Console } from '@angular/core/src/console';
 
 @Component({
   selector: 'app-body',
@@ -6,65 +7,105 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./body.component.css']
 })
 export class BodyComponent implements OnInit {
-  addHidden=true;
-  editHidden=true;
-  listHidden=true;
-  viewHidden=true;
-  name:string='';
-  type:string='';
-    usernames:string[]=[
-    'Piyush',
-    'nishtha',
-    'shubham',
-    'john'
+    
+    nameLists=['Shopping List','Task List','Appointy prep'];
+    list=[{
+      itemName:'Jeans',
+      itemstatus:false,
+      listName:'Shopping List'
+    },
+    {
+      itemName:'Books',
+      itemstatus:false,
+      listName:'Shopping List'
+    },
+    {
+      itemName:'Pens',
+      itemstatus:false,
+      listName:'Shopping List'
+    },
+
+    {
+      itemName:'Print Certificates',
+      itemstatus:false,
+      listName:'Task List'
+    },
+
+    {
+      itemName:'Prepare Draft',
+      itemstatus:false,
+      listName:'Task List'
+    },
+
+    {
+      itemName:'Prepare Html',
+      itemstatus:false,
+      listName:'Appointy prep'
+    },
+
+    {
+      itemName:'Prepare Css',
+      itemstatus:false,
+      listName:'Appointy prep'
+    },
+
+    {
+      itemName:'Prepare Bootstrap',
+      itemstatus:false,
+      listName:'Appointy prep'
+    },
+
+    {
+      itemName:'Prepare Angular',
+      itemstatus:false,
+      listName:'Appointy prep'
+    },
+      
   ];
-  usertypes:string[]=[
-    'student',
-    'admin',
-    'developer',
-    'student'
-  ]
-
+  selectedOption:string='Shopping List';
+  addToList;
+  submissionError;  
   
-  constructor() { 
-
-  }
-
-  onSubmit({value,valid}){
+  onAdd({value,valid}){
     if(valid){
-      this.usernames.push(this.name);
-      this.usertypes.push(this.type);
+      this.nameLists.push(this.addToList);
+      
+      this.submissionError='New List Added';
     }
     else{
-      
+      this.submissionError='Not Added, Try Again';
     }
   }
 
-  showAdd(){
-    this.addHidden=false;
-    this.editHidden=true;
-    this.listHidden=true;
-    this.viewHidden=true;
+  addTodo;
+  additionError;
+  onItemAdd({value,valid}){
+    if(valid){
+      this.list.push({'itemName':this.addTodo,'itemstatus':false,'listName':this.selectedOption});
+      
+      this.additionError='New Todo Added';
+    }
+    else{
+      this.additionError='Not Added, Try Again';
+    }
   }
-  showEdit(){
-    this.addHidden=true;
-    this.editHidden=false;
-    this.listHidden=true;
-    this.viewHidden=true;
+
+  deleteTodo(todos){
+    console.log("method called");
+    
+    this.list=this.list.filter(item=>item.itemName!=todos.itemName);
   }
-  showList(){
-    this.addHidden=true;
-    this.editHidden=true;
-    this.listHidden=false;
-    this.viewHidden=true;
+
+  isChecked(todos){
+    todos.itemstatus=true;
   }
-  showView(){
-    this.addHidden=true;
-    this.editHidden=true;
-    this.listHidden=true;
-    this.viewHidden=false;
-  }
+  
+ 
+
   ngOnInit() {
   }
 
+}
+interface Lists{
+  
 }
