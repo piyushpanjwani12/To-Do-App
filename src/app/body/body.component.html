@@ -1,8 +1,14 @@
-
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+        
+    });
+    </script>
 
 <div class="container" >
     <div class="container">
       <!-- All Lists Card -->
+      
       <div class="card" id="listCard">
         <div class="card-header">List Names</div>
         <div class="card-body">
@@ -41,15 +47,15 @@
             <span *ngFor="let todos of list">
               <div *ngIf="selectedOption===todos.listName" class="todo-items">
                 <span *ngIf="!todos.itemStatus">
-                  <input type="checkbox" [(ngModel)]="todos.itemStatus" (check)="!todos.itemStatus">{{todos.itemName}}</span>
+                  <input type="checkbox" [(ngModel)]="todos.itemStatus" (check)="!todos.itemStatus" style="margin-right: 10px;">{{todos.itemName}}</span>
               </div>
             </span>
             <!-- for checked -->
             <span *ngFor="let todos of list">
-              <div *ngIf="selectedOption===todos.listName"  class="todo-checked-items" (dblclick)="deleteTodo(todos)">
+              <div *ngIf="selectedOption===todos.listName"  class="todo-checked-items" (dblclick)="deleteTodo(todos)" data-toggle="tooltip" title="Double click to Delete">
                 <span *ngIf="todos.itemStatus">
                   <hr>
-                  <input type="checkbox" [(ngModel)]="todos.itemStatus" (check)="!todos.itemStatus"  >{{todos.itemName}}</span>
+                  <input type="checkbox" [(ngModel)]="todos.itemStatus" (check)="!todos.itemStatus"  style="margin-right: 10px;">{{todos.itemName}}</span>
                   
               </div>
             </span>
